@@ -29,6 +29,7 @@
     "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-react": "^7.9.1",
     "express": "^4.16.3",
+    "express-promise-router": "^3.0.2",
     "flow-bin": "^0.74.0",
     "morgan": "^1.9.0",
     "prettier": "^1.13.5",
