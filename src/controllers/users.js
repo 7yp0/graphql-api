@@ -5,7 +5,7 @@ export async function signUp(
   request: $Request,
   response: $Response,
   next: $Next,
-): void {
+): Promise<void> {
   console.log('signup called');
 
   response.status(200).send('signup');
@@ -17,7 +17,7 @@ export async function signIn(
   request: $Request,
   response: $Response,
   next: $Next,
-): void {
+): Promise<void> {
   console.log('signin called');
 
   response.status(200).send('signin');

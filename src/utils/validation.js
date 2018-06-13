@@ -3,13 +3,14 @@ import joi from 'joi';
 
 import type { $Request, $Response, $Next } from 'express';
 
+import { convertJoiError } from './error-handler';
+
 export function validateAuthorizationBody(schema: Object): Function {
   return (request: $Request, response: $Response, next: $Next) => {
     const result = joi.validate(request.body, schema);
 
     if (result.error) {
-      // TODO: add error handlin with error codes
-      return response.status(400).json(result.error);
+      return response.status(400).json(convertJoiError(result.error));
     }
 
     request.body.value = result.value;
