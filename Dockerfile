@@ -1,8 +1,8 @@
 FROM node:latest
 
-COPY . .
+WORKDIR /var/www
 
-WORKDIR .
+COPY . .
 
 RUN yarn install --production && yarn build
 
