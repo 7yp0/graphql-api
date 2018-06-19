@@ -21,26 +21,24 @@ export const API_ERROR_CODES: ErrorCodes = {
   ValidationError: '002',
 };
 
-export class ApiError {
-  constructor(
-    type: string,
-    message: string,
-    payload?: ?Object = null,
-  ): ApiErrorType {
-    return {
-      error: {
-        code: API_ERROR_CODES[type],
-        type,
-        message,
-      },
-      payload,
-    };
-  }
+export function createApiError(
+  type: string,
+  message: string,
+  payload?: ?Object = null,
+): ApiErrorType {
+  return {
+    error: {
+      code: API_ERROR_CODES[type],
+      type,
+      message,
+    },
+    payload,
+  };
 }
 
 export function convertJoiError(error: JoiError): ApiErrorType {
   if (!error.isJoi) {
-    return new ApiError('InvalidError', 'Error is not a valid Joi Error');
+    return createApiError('InvalidError', 'Error is not a valid Joi Error');
   }
 
   const {
@@ -51,12 +49,12 @@ export function convertJoiError(error: JoiError): ApiErrorType {
 
   const modifiedMessage = message.replace(/"/g, "'");
 
-  return new ApiError(name, modifiedMessage, payload);
+  return createApiError(name, modifiedMessage, payload);
 }
 
 export function convertException(
   exception: Exception,
   payload?: ?Object,
 ): ApiErrorType {
-  return new ApiError(exception.type, exception.message, payload);
+  return createApiError(exception.type, exception.message, payload);
 }
