@@ -13,7 +13,11 @@ export function validateAuthorizationBody(schema: Object): Function {
       return response.status(400).json(convertJoiError(result.error));
     }
 
-    request.body.value = result.value;
+    if (!request.value) {
+      request.value = {};
+    }
+
+    request.value.body = result.value;
 
     return next();
   };

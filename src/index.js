@@ -2,12 +2,15 @@
 import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
 
 import config from './config';
 import users from './routes/users';
 import todos from './routes/todos';
 
-const { port } = config;
+const { port, mongoUri } = config;
+
+mongoose.connect(mongoUri);
 
 const app = express();
 

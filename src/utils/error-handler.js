@@ -1,5 +1,6 @@
 // @flow
 import type { Error as JoiError } from 'joi';
+import type { $Response } from 'express';
 import type { Exception } from '../exceptions';
 
 type ApiErrorType = {
@@ -19,6 +20,7 @@ export const API_ERROR_CODES: ErrorCodes = {
   UnknownError: '000',
   InvalidError: '001',
   ValidationError: '002',
+  UserAlreadyExists: '003',
 };
 
 export function createApiError(
@@ -57,4 +59,14 @@ export function convertException(
   payload?: ?Object,
 ): ApiErrorType {
   return createApiError(exception.type, exception.message, payload);
+}
+
+export function handleError(
+  response: $Response,
+  exception: Exception,
+  payload?: ?Object,
+) {
+  const error = convertException(exception, payload);
+
+  response.status(exception.status).send(error);
 }
