@@ -37,7 +37,13 @@ export async function signIn(
   response: $Response,
   next: $Next,
 ): Promise<void> {
-  response.status(200).json({ message: 'signed in' });
+  const {
+    user: { id },
+  } = request;
+
+  const token = signToken(id);
+
+  response.status(200).json({ token });
 
   next();
 }
