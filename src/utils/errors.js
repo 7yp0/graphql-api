@@ -1,6 +1,5 @@
 // @flow
 import type { Error as JoiError } from 'joi';
-import type { $Request, $Response, $Next } from 'express';
 import type { Exception } from '../exceptions';
 import UnknownException from '../exceptions/UnknownException';
 
@@ -29,15 +28,12 @@ export function createApiError(
   };
 }
 
-export function convertException(
-  exception: Exception,
-  payload?: ?Object,
-): ApiErrorType {
+export function convertException(exception: Exception): ApiErrorType {
   return createApiError(
     exception.type,
     exception.code,
     exception.message,
-    payload,
+    exception.payload,
   );
 }
 
@@ -55,27 +51,4 @@ export function convertJoiError(error: JoiError, code: string): ApiErrorType {
   const modifiedMessage = message.replace(/"/g, "'");
 
   return createApiError(name, code, modifiedMessage, payload);
-}
-
-export function handleError(
-  exception: Exception,
-  request: $Request,
-  response: $Response,
-  next: $Next,
-) {
-  if (exception.type === 'ValidationException' && exception.error) {
-    const error = convertJoiError(exception.error, exception.code);
-
-    response.status(exception.status).send(error);
-
-    next(exception);
-
-    return;
-  }
-
-  const error = convertException(exception);
-
-  response.status(exception.status).send(error);
-
-  next(exception);
 }

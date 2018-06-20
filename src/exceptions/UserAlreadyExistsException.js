@@ -1,8 +1,8 @@
 // @flow
 import Es6Error from 'es6-error';
 
-class UserAlreadyExists extends Es6Error {
-  type = 'UserAlreadyExists';
+class UserAlreadyExistsException extends Es6Error {
+  type = 'UserAlreadyExistsException';
   status = 403;
   code = '002';
 
@@ -13,4 +13,4 @@ class UserAlreadyExists extends Es6Error {
   }
 }
 
-export default UserAlreadyExists;
+export default UserAlreadyExistsException;

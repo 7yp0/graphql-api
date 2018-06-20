@@ -2,7 +2,8 @@
 import type { $Request, $Response, $Next } from 'express';
 
 import User from '../models/user';
-import UserAlreadyExists from '../exceptions/UserAlreadyExists';
+import { signToken } from '../utils/authorization';
+import UserAlreadyExistsException from '../exceptions/UserAlreadyExistsException';
 
 export async function signUp(
   request: $Request,
@@ -14,7 +15,7 @@ export async function signUp(
   const user = await User.findOne({ email });
 
   if (user) {
-    throw new UserAlreadyExists(email);
+    throw new UserAlreadyExistsException(email);
   }
 
   const newUser = new User({
@@ -24,8 +25,9 @@ export async function signUp(
 
   await newUser.save();
 
-  // TODO: respond with token
-  response.status(200).send({ message: 'user created' });
+  const token = signToken(newUser.id);
+
+  response.status(200).json({ token });
 
   return next();
 }
@@ -35,7 +37,7 @@ export async function signIn(
   response: $Response,
   next: $Next,
 ): Promise<void> {
-  response.status(200).send('signin');
+  response.status(200).json({ message: 'signed in' });
 
   next();
 }

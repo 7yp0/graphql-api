@@ -6,9 +6,7 @@ export async function getTodos(
   response: $Response,
   next: $Next,
 ): Promise<void> {
-  console.log('getTodos called');
-
-  response.status(200).send('todos');
+  response.status(200).json({ messages: 'here are some todos' });
 
   next();
 }
