@@ -4,8 +4,8 @@ WORKDIR /var/www
 
 COPY . .
 
-RUN yarn install --production
+RUN yarn install --production && yarn build
 
 EXPOSE 3000
 
-CMD yarn build && yarn start-production
+CMD yarn start-production

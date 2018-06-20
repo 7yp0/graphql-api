@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 import config from './config';
 import users from './routes/users';
 import todos from './routes/todos';
+import { handleError } from './utils/error-handler';
 
 const { port, mongoUri } = config;
 
@@ -21,6 +22,8 @@ app.use(bodyParser.json());
 // Routes
 app.use('/v1/users', users);
 app.use('/v1/todos', todos);
+
+app.use(handleError);
 
 // Start the server
 const server = app.listen(port, () => {

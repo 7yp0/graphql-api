@@ -11,6 +11,9 @@ services:
       - NODE_ENV=production
       - PORT=3000
       - MONGO_DB_URI=mongodb://database/todo
+    command: ['sh', '-c', 'yarn start']
+    volumes:
+      - ./:/var/www
 
   database:
     image: mongo

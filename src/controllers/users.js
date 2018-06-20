@@ -3,7 +3,6 @@ import type { $Request, $Response, $Next } from 'express';
 
 import User from '../models/user';
 import UserAlreadyExists from '../exceptions/UserAlreadyExists';
-import { handleError } from '../utils/error-handler';
 
 export async function signUp(
   request: $Request,
@@ -15,7 +14,7 @@ export async function signUp(
   const user = await User.findOne({ email });
 
   if (user) {
-    return handleError(response, new UserAlreadyExists(email));
+    throw new UserAlreadyExists(email);
   }
 
   const newUser = new User({
@@ -26,7 +25,7 @@ export async function signUp(
   await newUser.save();
 
   // TODO: respond with token
-  response.status(200).send('user created');
+  response.status(200).send({ message: 'user created' });
 
   return next();
 }

@@ -1,7 +1,8 @@
 // @flow
 import type { Error as JoiError } from 'joi';
-import type { $Response } from 'express';
+import type { $Request, $Response, $Next } from 'express';
 import type { Exception } from '../exceptions';
+import UnknownException from '../exceptions/UnknownException';
 
 type ApiErrorType = {
   error: {
@@ -12,25 +13,15 @@ type ApiErrorType = {
   payload: ?Object,
 };
 
-type ErrorCodes = {
-  [string]: string,
-};
-
-export const API_ERROR_CODES: ErrorCodes = {
-  UnknownError: '000',
-  InvalidError: '001',
-  ValidationError: '002',
-  UserAlreadyExists: '003',
-};
-
 export function createApiError(
   type: string,
+  code: string,
   message: string,
   payload?: ?Object = null,
 ): ApiErrorType {
   return {
     error: {
-      code: API_ERROR_CODES[type],
+      code,
       type,
       message,
     },
@@ -38,9 +29,21 @@ export function createApiError(
   };
 }
 
-export function convertJoiError(error: JoiError): ApiErrorType {
+export function convertException(
+  exception: Exception,
+  payload?: ?Object,
+): ApiErrorType {
+  return createApiError(
+    exception.type,
+    exception.code,
+    exception.message,
+    payload,
+  );
+}
+
+export function convertJoiError(error: JoiError, code: string): ApiErrorType {
   if (!error.isJoi) {
-    return createApiError('InvalidError', 'Error is not a valid Joi Error');
+    return convertException(new UnknownException());
   }
 
   const {
@@ -51,22 +54,28 @@ export function convertJoiError(error: JoiError): ApiErrorType {
 
   const modifiedMessage = message.replace(/"/g, "'");
 
-  return createApiError(name, modifiedMessage, payload);
-}
-
-export function convertException(
-  exception: Exception,
-  payload?: ?Object,
-): ApiErrorType {
-  return createApiError(exception.type, exception.message, payload);
+  return createApiError(name, code, modifiedMessage, payload);
 }
 
 export function handleError(
-  response: $Response,
   exception: Exception,
-  payload?: ?Object,
+  request: $Request,
+  response: $Response,
+  next: $Next,
 ) {
-  const error = convertException(exception, payload);
+  if (exception.type === 'ValidationException' && exception.error) {
+    const error = convertJoiError(exception.error, exception.code);
+
+    response.status(exception.status).send(error);
+
+    next(exception);
+
+    return;
+  }
+
+  const error = convertException(exception);
 
   response.status(exception.status).send(error);
+
+  next(exception);
 }
