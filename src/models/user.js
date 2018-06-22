@@ -20,6 +20,7 @@ const userSchema = new Schema({
   },
 });
 
+// ? maybe put into a service? as well as .find`s ?
 userSchema.pre('save', async function hashPassword(
   next: Function,
 ): Promise<void> {
