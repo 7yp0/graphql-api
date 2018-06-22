@@ -1,7 +1,7 @@
 // @flow
 import type { $Request, $Response, $Next } from 'express';
 
-import User from '../models/user';
+import { saveNewUser, findUserByEmail } from '../services/users';
 import { signToken } from '../utils/authorization';
 import UserAlreadyExistsException from '../exceptions/UserAlreadyExistsException';
 
@@ -12,20 +12,18 @@ export async function signUp(
 ): Promise<void> {
   const { email, password } = request.value.body;
 
-  const user = await User.findOne({ email });
+  const user = await findUserByEmail(email);
 
   if (user) {
     throw new UserAlreadyExistsException(email);
   }
 
-  const newUser = new User({
+  const id = await saveNewUser({
     email,
     password,
   });
 
-  await newUser.save();
-
-  const token = signToken(newUser.id);
+  const token = signToken(id);
 
   response.status(200).json({ token });
 

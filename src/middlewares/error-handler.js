@@ -40,6 +40,9 @@ export function handleError(
     const newException = new UnknownException();
     const error = convertException(newException);
 
+    // eslint-disable-next-line no-console
+    console.error(exception);
+
     response.status(newException.status).send(error);
 
     next(newException);

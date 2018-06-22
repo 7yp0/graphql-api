@@ -3,7 +3,11 @@ import { ExtractJwt, Strategy as JwtStrategy } from 'passport-jwt';
 import { Strategy as LocalStrategy } from 'passport-local';
 
 import config from '../config';
-import User from '../models/user';
+import {
+  findUserById,
+  findUserByEmail,
+  isValidPassword,
+} from '../services/users';
 import InvalidCredentialsException from '../exceptions/InvalidCredentialsException';
 
 import type { Jwt } from '../utils/authorization';
@@ -15,7 +19,7 @@ export const jwtStrategy = new JwtStrategy(
   },
   async (payload: Jwt, done: Function) => {
     try {
-      const user = await User.findById(payload.sub);
+      const user = await findUserById(payload.sub);
 
       if (!user) {
         done(null, false);
@@ -36,7 +40,7 @@ export const localStrategy = new LocalStrategy(
   },
   async (email: string, password: string, done: Function) => {
     try {
-      const user = await User.findOne({ email });
+      const user = await findUserByEmail(email);
 
       if (!user) {
         done(new InvalidCredentialsException({ email, password }), false);
@@ -44,7 +48,7 @@ export const localStrategy = new LocalStrategy(
         return;
       }
 
-      const isMatch = await user.isValidPassword(password);
+      const isMatch = await isValidPassword(user.password, password);
 
       if (!isMatch) {
         done(new InvalidCredentialsException({ email, password }), false);
