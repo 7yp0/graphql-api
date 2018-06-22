@@ -15,6 +15,11 @@ services:
     volumes:
       - ./:/var/www
 
+  mongo-seed:
+    build: ./mongo-seed
+    depends_on:
+      - database
+
   database:
     image: mongo
     ports:
