@@ -1,5 +1,5 @@
 // @flow
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
 
 import config from '../config';
 import User, { type UserType } from '../models/user';

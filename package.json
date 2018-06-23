@@ -19,7 +19,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-flow": "^6.23.0",
     "babel-preset-stage-2": "^6.24.1",
-    "bcryptjs": "^2.4.3",
+    "bcrypt": "^2.0.1",
     "body-parser": "^1.18.3",
     "dotenv": "^6.0.0",
     "es6-error": "^4.1.1",
