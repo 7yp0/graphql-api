@@ -13,4 +13,4 @@ const UserSchema = `
   }
 `;
 
-export const Schema = () => [Base, UserSchema];
+export default () => [Base, UserSchema];

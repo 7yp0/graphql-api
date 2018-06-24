@@ -3,9 +3,10 @@ import { makeExecutableSchema } from 'graphql-tools';
 
 import resolvers from './resolvers';
 import BaseSchema from './base';
-import { Schema as UserSchema } from './user/schema';
+import UserSchema from './user/schema';
+import TodoSchema from './todo/schema';
 
 export default makeExecutableSchema({
-  typeDefs: [BaseSchema, UserSchema],
+  typeDefs: [BaseSchema, UserSchema, TodoSchema],
   resolvers,
 });

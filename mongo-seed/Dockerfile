@@ -1,5 +1,6 @@
 FROM mongo
 
-COPY init.json /init.json
+COPY users.json /users.json
+COPY todos.json /todos.json
 
-CMD mongoimport --host database --db todo --collection users --type json --file /init.json --jsonArray
+CMD mongoimport --host database --db test --collection users --type json --file /users.json --jsonArray; mongoimport --host database --db test --collection todos --type json --file /todos.json --jsonArray

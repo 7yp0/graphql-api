@@ -10,7 +10,7 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3000
-      - MONGO_DB_URI=mongodb://database/todo
+      - MONGO_DB_URI=mongodb://database/test
     command: ['sh', '-c', 'yarn start']
     volumes:
       - ./src:/var/www/src
