@@ -10,7 +10,7 @@ export async function signUp(
   response: $Response,
   next: $Next,
 ): Promise<void> {
-  const { email, password } = request.value.body;
+  const { email, password } = request.body;
 
   const user = await findUserByEmail(email);
 

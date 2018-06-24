@@ -13,13 +13,7 @@ export function validateAuthorizationBody(schema: Object): Function {
       throw new ValidationException(result.error);
     }
 
-    if (!request.value) {
-      request.value = {};
-    }
-
-    request.value.body = result.value;
-
-    return next();
+    next();
   };
 }
 
