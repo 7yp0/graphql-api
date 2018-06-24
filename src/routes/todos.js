@@ -1,16 +1,11 @@
 // @flow
 import promiseRouter from 'express-promise-router';
-import passport from 'passport';
 
+import { authorizeJwt } from '../middlewares/authorization';
 import { getTodos } from '../controllers/todos';
 
 const router = promiseRouter();
 
-router
-  .route('/')
-  .get(
-    passport.authenticate('jwt', { session: false, failWithError: true }),
-    getTodos,
-  );
+router.route('/').get(authorizeJwt, getTodos);
 
 export default router;

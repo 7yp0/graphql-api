@@ -21,3 +21,7 @@ export function signToken(id: string): string {
     { expiresIn: '1d' },
   );
 }
+
+export function verifyToken(token: string): Jwt {
+  return JWT.verify(token, config.jwtSecret);
+}

@@ -1,9 +1,9 @@
 // @flow
 import promiseRouter from 'express-promise-router';
-import passport from 'passport';
 
-import { signUp, signIn } from '../controllers/users';
+import { verifyCredentials } from '../middlewares/authorization';
 import { validateAuthorizationBody, schemas } from '../utils/validation';
+import { signUp, signIn } from '../controllers/users';
 
 const router = promiseRouter();
 
@@ -15,7 +15,7 @@ router
   .route('/signin')
   .post(
     validateAuthorizationBody(schemas.authSchema),
-    passport.authenticate('local', { session: false, failWithError: true }),
+    verifyCredentials,
     signIn,
   );
 

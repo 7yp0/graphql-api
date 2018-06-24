@@ -3,7 +3,6 @@ import type { $Request, $Response, $Next } from 'express';
 
 import { convertJoiError, convertException } from '../utils/errors';
 
-import UnauthorizedException from '../exceptions/UnauthorizedException';
 import UnknownException from '../exceptions/UnknownException';
 
 import type { Exception } from '../exceptions';
@@ -23,19 +22,6 @@ export function handleError(
 
     return;
   }
-
-  // handle passport jwt strategy errors
-  if (exception.name === 'AuthenticationError') {
-    const newException = new UnauthorizedException();
-    const error = convertException(newException);
-
-    response.status(newException.status).send(error);
-
-    next(newException);
-
-    return;
-  }
-
   if (!exception.code || !exception.status) {
     const newException = new UnknownException();
     const error = convertException(newException);
