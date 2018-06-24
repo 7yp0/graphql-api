@@ -1,12 +1,10 @@
 // @flow
 import type { Exception } from '../exceptions';
 
-type ApiErrorType = {
-  error: {
-    code: string,
-    type: string,
-    message: string,
-  },
+export type ApiErrorType = {
+  code: string,
+  type: string,
+  message: string,
   payload: ?Object,
 };
 
@@ -17,11 +15,9 @@ export function createApiError(
   payload?: ?Object = null,
 ): ApiErrorType {
   return {
-    error: {
-      code,
-      type,
-      message,
-    },
+    code,
+    type,
+    message,
     payload,
   };
 }

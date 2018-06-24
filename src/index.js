@@ -5,13 +5,22 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import { graphqlExpress } from 'apollo-server-express';
 
+import type { GraphQLError as GraphQLErrorBase } from 'graphql';
+
 import config from './config';
-import { handleError } from './middlewares/error-handler';
+import { convertException, type ApiErrorType } from './utils/errors';
 import {
   authorizeJwt,
   type AuthorizedRequest,
 } from './middlewares/authorization';
+import UnknownException from './exceptions/UnknownException';
 import schema from './graphql/schema';
+
+import type { Exception } from './exceptions';
+
+type GraphQLError<Error> = {
+  originalError: Error,
+} & GraphQLErrorBase;
 
 const { port, mongoUri } = config;
 
@@ -30,11 +39,17 @@ app.use(
   graphqlExpress((request: AuthorizedRequest) => ({
     schema,
     context: { user: request.user },
+    formatError({ originalError }: GraphQLError<Exception>): ApiErrorType {
+      if (!originalError.code || !originalError.status) {
+        const newException = new UnknownException();
+
+        return convertException(newException);
+      }
+
+      return convertException(originalError);
+    },
   })),
 );
-
-// Error handling
-app.use(handleError);
 
 // Start the server
 const server = app.listen(port, () => {
