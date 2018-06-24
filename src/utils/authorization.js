@@ -3,10 +3,10 @@ import JWT from 'jsonwebtoken';
 
 import InvalidCredentialsException from '../exceptions/InvalidCredentialsException';
 import UnauthorizedException from '../exceptions/UnauthorizedException';
-import { findUserByEmail, isValidPassword } from '../graphql/user/service';
+import { findUserByEmail, isValidPassword } from '../services/user';
 import config from '../config';
 
-import type { UserType } from '../graphql/user/model';
+import type { UserType } from '../models/user';
 
 export type Jwt = {
   iss: string,

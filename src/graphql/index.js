@@ -1,5 +1,5 @@
 // @flow
-import { type UserType } from './user/model';
+import { type UserType } from '../models/user';
 
 export type Context = {
   user: UserType,

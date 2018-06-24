@@ -1,5 +1,6 @@
 // @flow
 import Base from '../base';
+import User from '../user/schema';
 
 const TodoSchema = `
   extend type Query {
@@ -9,7 +10,8 @@ const TodoSchema = `
     id: String!
     title: String
     checked: Boolean!
+    user: User!
   }
 `;
 
-export default () => [Base, TodoSchema];
+export default () => [Base, TodoSchema, User];

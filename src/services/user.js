@@ -1,8 +1,8 @@
 // @flow
 import bcrypt from 'bcrypt';
 
-import config from '../../config';
-import User from './model';
+import config from '../config';
+import User from '../models/user';
 
 async function hashPassword(password: string): Promise<string> {
   const salt = await bcrypt.genSalt(config.saltRounds);

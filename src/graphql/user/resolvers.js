@@ -1,16 +1,22 @@
 // @flow
-import { type UserType } from './model';
-import { saveNewUser, findUserByEmail } from './service';
-import { signToken, verifyCredentials } from '../../utils/authorization';
+import { type Context } from '../';
+import { type UserType } from '../../models/user';
+import { saveNewUser, findUserByEmail } from '../../services/user';
+import {
+  signToken,
+  verifyUser,
+  verifyCredentials,
+} from '../../utils/authorization';
 import UserAlreadyExistsException from '../../exceptions/UserAlreadyExistsException';
+import { findTodoByUserId } from '../../services/todo';
 
 async function signUp(
   parent: Object,
   { email, password }: UserType,
 ): Promise<string> {
-  const user = await findUserByEmail(email);
+  const foundUser = await findUserByEmail(email);
 
-  if (user) {
+  if (foundUser) {
     throw new UserAlreadyExistsException(email);
   }
 
@@ -25,11 +31,23 @@ async function signIn(
   parent: Object,
   { email, password }: UserType,
 ): Promise<string> {
-  const user = await verifyCredentials(email, password);
+  const verifiedUser = await verifyCredentials(email, password);
 
-  const token = signToken(user.id);
+  const token = signToken(verifiedUser.id);
 
   return token;
+}
+
+export async function todos(
+  parent: Object,
+  args: Object,
+  context: Context,
+): Promise<Array<string>> {
+  const verifiedUser = verifyUser(context.user);
+
+  const userTodos = await findTodoByUserId(verifiedUser.id);
+
+  return userTodos;
 }
 
 export default {
@@ -37,5 +55,8 @@ export default {
   Mutation: {
     signUp,
     signIn,
+  },
+  User: {
+    todos,
   },
 };

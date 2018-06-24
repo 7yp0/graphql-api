@@ -2,9 +2,9 @@
 import type { $Request, $Response, $Next } from 'express';
 
 import { verifyToken } from '../utils/authorization';
-import { findUserById } from '../graphql/user/service';
+import { findUserById } from '../services/user';
 
-import type { UserType } from '../graphql/user/model';
+import type { UserType } from '../models/user';
 
 export type AuthorizedRequest = {
   user: UserType,

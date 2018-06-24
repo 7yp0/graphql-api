@@ -1,10 +1,10 @@
 // @flow
 const Base = `
   type Query {
-      dummy: Boolean
+      empty: String
   }
   type Mutation {
-      dummy: Boolean
+      empty: String
   }
   scalar Email
 `;
