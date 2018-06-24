@@ -3,12 +3,12 @@ import Base from '../base';
 
 const UserSchema = `
   extend type Mutation {
-    signUp(email: String!, password: String!): String!
-    signIn(email: String!, password: String!): String!
+    signUp(email: Email!, password: String!): String!
+    signIn(email: Email!, password: String!): String!
   }
   type User {
     id: String!
-    email: String!
+    email: Email!
     password: String!
   }
 `;

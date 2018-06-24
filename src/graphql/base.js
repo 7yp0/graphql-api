@@ -6,6 +6,7 @@ const Base = `
   type Mutation {
       dummy: Boolean
   }
+  scalar Email
 `;
 
 export default () => [Base];

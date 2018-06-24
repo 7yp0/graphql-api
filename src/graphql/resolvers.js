@@ -1,4 +1,6 @@
 // @flow
+import { GraphQLEmail } from 'graphql-custom-types';
+
 import userResolvers from './user/resolvers';
 
 export default {
@@ -9,5 +11,5 @@ export default {
   Mutation: {
     ...userResolvers.Mutation,
   },
-  // TODO: add custom email type https://www.apollographql.com/docs/graphql-tools/scalars.html + https://github.com/stylesuxx/graphql-custom-types/blob/master/src/scalars.js
+  Email: GraphQLEmail,
 };
