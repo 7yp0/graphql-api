@@ -1,8 +1,8 @@
 // @flow
 import bcrypt from 'bcrypt';
 
-import config from '../config';
-import User, { type UserType } from '../models/user';
+import config from '../../config';
+import User from './model';
 
 async function hashPassword(password: string): Promise<string> {
   const salt = await bcrypt.genSalt(config.saltRounds);
@@ -18,10 +18,10 @@ export async function isValidPassword(
   return bcrypt.compare(comparePassword, realPassword);
 }
 
-export async function saveNewUser({
-  email,
-  password,
-}: UserType): Promise<string> {
+export async function saveNewUser(
+  email: string,
+  password: string,
+): Promise<string> {
   const hashedPassword = await hashPassword(password);
 
   const newUser = new User({

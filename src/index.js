@@ -3,11 +3,15 @@ import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import { graphqlExpress } from 'apollo-server-express';
 
 import config from './config';
-import users from './routes/users';
-import todos from './routes/todos';
 import { handleError } from './middlewares/error-handler';
+import {
+  authorizeJwt,
+  type AuthorizedRequest,
+} from './middlewares/authorization';
+import schema from './graphql/schema';
 
 const { port, mongoUri } = config;
 
@@ -18,11 +22,18 @@ const app = express();
 // Middlewares
 app.use(morgan('dev'));
 app.use(bodyParser.json());
+app.use(authorizeJwt);
 
 // Routes
-app.use('/v1/users', users);
-app.use('/v1/todos', todos);
+app.use(
+  '/graphql',
+  graphqlExpress((request: AuthorizedRequest) => ({
+    schema,
+    context: { user: request.user },
+  })),
+);
 
+// Error handling
 app.use(handleError);
 
 // Start the server

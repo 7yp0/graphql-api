@@ -1,7 +1,7 @@
 // @flow
 import type { $Request, $Response, $Next } from 'express';
 
-import { convertJoiError, convertException } from '../utils/errors';
+import { convertException } from '../utils/errors';
 
 import UnknownException from '../exceptions/UnknownException';
 
@@ -13,15 +13,6 @@ export function handleError(
   response: $Response,
   next: $Next,
 ) {
-  if (exception.type === 'ValidationException') {
-    const error = convertJoiError(exception.error, exception.code);
-
-    response.status(exception.status).send(error);
-
-    next(exception);
-
-    return;
-  }
   if (!exception.code || !exception.status) {
     const newException = new UnknownException();
     const error = convertException(newException);

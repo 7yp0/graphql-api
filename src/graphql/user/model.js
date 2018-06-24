@@ -1,14 +1,15 @@
 // @flow
 import mongoose from 'mongoose';
 
-const { Schema } = mongoose;
+const { Schema: MongoSchema } = mongoose;
 
 export type UserType = {
+  id: string,
   email: string,
   password: string,
 };
 
-const userSchema = new Schema({
+const mongoSchema = new MongoSchema({
   email: {
     type: String,
     required: true,
@@ -21,6 +22,6 @@ const userSchema = new Schema({
   },
 });
 
-const User = mongoose.model('user', userSchema);
+const User = mongoose.model('user', mongoSchema);
 
 export default User;

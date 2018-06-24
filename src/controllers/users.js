@@ -1,7 +1,7 @@
 // @flow
 import type { $Request, $Response, $Next } from 'express';
 
-import { saveNewUser, findUserByEmail } from '../services/users';
+import { saveNewUser, findUserByEmail } from '../graphql/user/service';
 import { signToken } from '../utils/authorization';
 import UserAlreadyExistsException from '../exceptions/UserAlreadyExistsException';
 
@@ -18,10 +18,7 @@ export async function signUp(
     throw new UserAlreadyExistsException(email);
   }
 
-  const id = await saveNewUser({
-    email,
-    password,
-  });
+  const id = await saveNewUser(email, password);
 
   const token = signToken(id);
 
