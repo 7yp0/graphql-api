@@ -6,6 +6,13 @@ const TodoSchema = `
   extend type Query {
     todos: [Todo]!
   }
+  extend type Mutation {
+    createTodo(title: String!): Todo!
+    checkTodo(id: String!): Todo!
+    unCheckTodo(id: String!): Todo!
+    editTodo(id: String!, title: String!): Todo!
+    deleteTodo(id: String!): Boolean!
+  }
   type Todo {
     id: String!
     title: String

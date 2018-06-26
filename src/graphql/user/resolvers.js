@@ -8,7 +8,7 @@ import {
   verifyCredentials,
 } from '../../utils/authorization';
 import UserAlreadyExistsException from '../../exceptions/UserAlreadyExistsException';
-import { findTodoByUserId } from '../../services/todo';
+import { findTodosByUserId } from '../../services/todo';
 
 async function signUp(
   parent: Object,
@@ -45,7 +45,7 @@ export async function todos(
 ): Promise<Array<string>> {
   const verifiedUser = verifyUser(context.user);
 
-  const userTodos = await findTodoByUserId(verifiedUser.id);
+  const userTodos = await findTodosByUserId(verifiedUser.id);
 
   return userTodos;
 }
