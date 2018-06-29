@@ -56,10 +56,15 @@ export async function editTodo(
 export async function deleteTodos(
   parent: Object,
   { ids }: { ids: Array<string> },
-): Promise<boolean> {
+  context: Context,
+): Promise<TodoType> {
+  const verifiedUser = verifyUser(context.user);
+
   await deleteTodosByIds(ids);
 
-  return true;
+  const userTodos = await findTodosByUserId(verifiedUser.id);
+
+  return userTodos;
 }
 
 function user(parent: Object, args: Object, context: Context): UserType {
