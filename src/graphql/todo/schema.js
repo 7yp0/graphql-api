@@ -11,7 +11,7 @@ const TodoSchema = `
     checkTodo(id: String!): Todo!
     unCheckTodo(id: String!): Todo!
     editTodo(id: String!, title: String!): Todo!
-    deleteTodo(id: String!): Boolean!
+    deleteTodos(ids: [String!]!): Boolean!
   }
   type Todo {
     id: String!

@@ -35,6 +35,12 @@ export async function editTodoById(
   return Todo.findByIdAndUpdate(id, { title }, { new: true });
 }
 
-export async function deleteTodoById(id: string): Promise<TodoType> {
-  return Todo.findByIdAndRemove(id);
+export async function deleteTodosByIds(
+  ids: Array<string>,
+): Promise<Array<TodoType>> {
+  return Promise.all(
+    ids.map(
+      async (id: string): Promise<TodoType> => Todo.findByIdAndRemove(id),
+    ),
+  );
 }

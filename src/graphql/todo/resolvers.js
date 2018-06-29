@@ -9,7 +9,7 @@ import {
   checkTodoById,
   unCheckTodoById,
   editTodoById,
-  deleteTodoById,
+  deleteTodosByIds,
 } from '../../services/todo';
 
 export async function todos(
@@ -53,11 +53,11 @@ export async function editTodo(
   return editTodoById(id, title);
 }
 
-export async function deleteTodo(
+export async function deleteTodos(
   parent: Object,
-  { id }: { id: string },
+  { ids }: { ids: Array<string> },
 ): Promise<boolean> {
-  await deleteTodoById(id);
+  await deleteTodosByIds(ids);
 
   return true;
 }
@@ -75,7 +75,7 @@ export default {
     checkTodo,
     unCheckTodo,
     editTodo,
-    deleteTodo,
+    deleteTodos,
   },
   Todo: {
     user,
