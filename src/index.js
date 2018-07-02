@@ -27,11 +27,10 @@ const { port, mongoUri } = config;
 
 mongoose.connect(mongoUri);
 
-// TODO add cors
 const app = express();
 
 // Middlewares
-app.use(cors());;
+app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(authorizeJwt);
@@ -43,7 +42,7 @@ app.use(
     schema,
     context: { user: request.user },
     formatError({ originalError }: GraphQLError<Exception>): ApiErrorType {
-      if (!originalError.code || !originalError.status) {
+      if (!originalError || !originalError.code || !originalError.status) {
         const newException = new UnknownException();
 
         return convertException(newException);
