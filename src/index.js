@@ -3,6 +3,7 @@ import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import cors from 'cors';
 import { graphqlExpress } from 'apollo-server-express';
 
 import type { GraphQLError as GraphQLErrorBase } from 'graphql';
@@ -26,9 +27,11 @@ const { port, mongoUri } = config;
 
 mongoose.connect(mongoUri);
 
+// TODO add cors
 const app = express();
 
 // Middlewares
+app.use(cors());;
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(authorizeJwt);

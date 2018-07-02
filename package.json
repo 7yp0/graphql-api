@@ -22,6 +22,7 @@
     "babel-preset-stage-2": "^6.24.1",
     "bcrypt": "^2.0.1",
     "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
     "dotenv": "^6.0.0",
     "es6-error": "^4.1.1",
     "eslint": "^4.19.1",
